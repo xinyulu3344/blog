@@ -15,5 +15,9 @@ blog
 # idea
 .idea/
 
+# config
+config/config.ini
+
+
 # Dependency directories (remove the comment below to include it)
 # vendor/

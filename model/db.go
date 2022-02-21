@@ -1,13 +1,15 @@
 package model
 
 import (
-    "blog/utils"
-    "database/sql"
-    "fmt"
-    "gorm.io/driver/mysql"
-    "gorm.io/gorm"
-    "gorm.io/gorm/schema"
-    "time"
+	"blog/utils"
+	"database/sql"
+	"fmt"
+	"time"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 )
 
 var db *gorm.DB
@@ -18,6 +20,7 @@ func InitDB() {
         utils.DbUser, utils.DbPassword, utils.DbHost, utils.DbPort, utils.DbName,
         )
     db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
         NamingStrategy: schema.NamingStrategy{
             SingularTable: true,
         },
