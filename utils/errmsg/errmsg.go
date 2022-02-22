@@ -3,6 +3,7 @@ package errmsg
 const (
     SUCCESS = 200
     ERROR = 500
+    // code = 1000 用户模块
     ERROR_USERNAME_USED = 1001
     ERROR_PASSWORD_WRONG = 1002
     ERROR_USER_NOT_EXIST = 1003
@@ -10,6 +11,9 @@ const (
     ERROR_TOKEN_RUNTIME = 1005
     ERROR_TOKEN_WRONG = 1006
     ERROR_TOKEN_TYPE_WRONG = 1007
+    
+    // code = 2000...  分类模块
+    ERROR_CATE_EXIST = 2000
 )
 
 
@@ -23,6 +27,7 @@ var codeMsg = map[int]string{
     ERROR_TOKEN_RUNTIME:   "TOKEN已过期",
     ERROR_TOKEN_WRONG:     "TOKEN不正确",
     ERROR_TOKEN_TYPE_WRONG: "TOKEN格式错误",
+    ERROR_CATE_EXIST:      "分类已存在",
 }
 
 func GetErrMsg(code int) string {
