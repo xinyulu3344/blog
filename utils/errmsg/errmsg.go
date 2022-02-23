@@ -11,6 +11,7 @@ const (
     ERROR_TOKEN_RUNTIME = 1005
     ERROR_TOKEN_WRONG = 1006
     ERROR_TOKEN_TYPE_WRONG = 1007
+    ERROR_USER_NO_RIGHT = 1008
     
     // code = 2000...  文章模块的错误
     ERROR_ARTICLE_NOT_EXIST = 2001
@@ -33,6 +34,7 @@ var codeMsg = map[int]string{
     ERROR_TOKEN_TYPE_WRONG: "TOKEN格式错误",
     ERROR_CATE_EXIST:      "分类已存在",
     ERROR_ARTICLE_NOT_EXIST: "文章不存在",
+    ERROR_USER_NO_RIGHT: "该用户无权限",
 }
 
 func GetErrMsg(code int) string {

@@ -3,8 +3,9 @@ package model
 import (
 	"blog/utils/errmsg"
 	"encoding/base64"
+	"fmt"
 	"log"
-
+	
 	"golang.org/x/crypto/scrypt"
 	"gorm.io/gorm"
 )
@@ -12,7 +13,7 @@ import (
 type User struct {
     gorm.Model
     UserName string `gorm:"type:varchar(20);not null" json:"username"`
-    Password string `gorm:"type:varchar(20);not null" json:"password"`
+    Password string `gorm:"type:varchar(50);not null" json:"password"`
     Role     int    `gorm:"type:int;" json:"role"`
 }
 
@@ -79,4 +80,22 @@ func ScryptPw(password string) string {
 	}
 	Fpw := base64.StdEncoding.EncodeToString(HashPw)
 	return Fpw
+}
+
+// CheckLogin 登录验证
+func CheckLogin(username string, password string) int {
+	var user User
+	db.Where("user_name = ?", username).First(&user)
+	if user.ID == 0 {
+		return errmsg.ERROR_USER_NOT_EXIST
+	}
+	fmt.Println(user.Password)
+	fmt.Println(ScryptPw(password))
+	if ScryptPw(password) != user.Password {
+		return errmsg.ERROR_PASSWORD_WRONG
+	}
+	if user.Role != 0 {
+		return errmsg.ERROR_USER_NO_RIGHT
+	}
+	return errmsg.SUCCESS
 }
