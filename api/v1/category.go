@@ -42,6 +42,25 @@ func GetCategories(c *gin.Context)  {
     })
 }
 
+func GetCategoryArticles(c *gin.Context) {
+    pageSize, _ := strconv.Atoi(c.Query("pagesize"))
+    pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+    id, _ := strconv.Atoi(c.Param("id"))
+    if pageSize == 0 {
+        pageSize = 20
+    }
+    if pageNum == 0 {
+        pageNum = 1
+    }
+    data, code := model.GetCategoryArticles(id, pageSize, pageNum)
+    c.JSON(http.StatusOK, gin.H{
+        "status": code,
+        "data": data,
+        "message": errmsg.GetErrMsg(code),
+    })
+    
+}
+
 // EditCategory 编辑分类
 func EditCategory(c *gin.Context)  {
     var data model.Category

@@ -20,7 +20,16 @@ func AddArticle(c *gin.Context) {
     })
 }
 
-// todo 查询单个文章信息
+// GetArticleInfo 查询单个文章信息
+func GetArticleInfo(c *gin.Context)  {
+    id, _ := strconv.Atoi(c.Param("id"))
+    data, code := model.GetArticleInfo(id)
+    c.JSON(http.StatusOK, gin.H{
+        "status": code,
+        "data": data,
+        "message": errmsg.GetErrMsg(code),
+    })
+}
 
 // GetArticles 查询文章列表
 func GetArticles(c *gin.Context)  {
@@ -32,8 +41,7 @@ func GetArticles(c *gin.Context)  {
     if pageNum == 0 {
         pageNum = 1
     }
-    data := model.GetArticles(pageSize, pageNum)
-    code := errmsg.SUCCESS
+    data, code := model.GetArticles(pageSize, pageNum)
     c.JSON(http.StatusOK, gin.H{
         "status": code,
         "data": data,

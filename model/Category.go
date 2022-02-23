@@ -29,7 +29,15 @@ func CreateCategory(data *Category) int {
     return errmsg.SUCCESS
 }
 
-// TODO 查询分类下的所有文章
+// GetCategoryArticles 查询分类下的所有文章
+func GetCategoryArticles(id int, pageSize int, pageNum int) ([]Article, int) {
+    var categoryArticles []Article
+    err := db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Where("cid = ?", id).Find(&categoryArticles).Error
+    if err != nil {
+        return nil, errmsg.ERROR_CATE_NOT_EXIST
+    }
+    return categoryArticles, errmsg.SUCCESS
+}
 
 // GetCategories 查询分类列表
 func GetCategories(pageSize int, pageNum int) []Category {
