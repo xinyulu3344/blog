@@ -1,7 +1,24 @@
 <template>
   <div class="container">
     <div class="loginBox">
-      登录页面
+      <a-form-model ref="loginFormRef" :rules="rules" :model="formdata" class="loginForm">
+        <a-form-model-item prop="username">
+          <a-input v-model="formdata.username" placeholder="请输入用户名">
+            <a-icon slot="prefix" type="user" style="color:rgba(0,0,0,.25)" />
+          </a-input>
+        </a-form-model-item>
+
+        <a-form-model-item prop="password">
+          <a-input v-model="formdata.password" placeholder="请输入密码" type="password">
+            <a-icon slot="prefix" type="lock" style="color:rgba(0,0,0,.25)" />
+          </a-input>
+        </a-form-model-item>
+
+        <a-form-model-item class="loginBtn">
+          <a-button type="primary" style="margin: 10px" @click="login">登录</a-button>
+          <a-button type="info" style="margin: 10px" @click="resetForm">取消</a-button>
+        </a-form-model-item>
+      </a-form-model>
     </div>
   </div>
 
@@ -26,6 +43,60 @@ export default {
   width: 450px;
   height: 300px;
   background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 9px;
+}
+
+.loginForm {
+  width: 100%;
+  position: absolute;
+  bottom: 10%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.loginBtn {
+  display: flex;
+  justify-content: flex-end;
 }
 
 </style>
+
+<script>
+import {message} from "ant-design-vue";
+
+export default {
+  data() {
+    return {
+      formdata: {
+        username: '',
+        password: ''
+      },
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 4, max: 12, message: '用户名必须在4-12个字符之间', trigger: 'blur'}
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '用户名必须在6-20个字符之间', trigger: 'blur'}
+        ]
+      },
+    }
+  },
+  methods: {
+    resetForm() {
+      this.$refs.loginFormRef.resetFields()
+    },
+    login() {
+      this.$refs.loginFormRef.validate((valid)=>{
+        if (!valid) return this.$message.error("用户名密码不合法，请重新输入")
+        const res = this.$http.post('login', this.formdata)
+      })
+    }
+  }
+}
+</script>
